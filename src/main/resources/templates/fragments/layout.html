@@ -21,35 +21,37 @@
         
         
         <!-- Seinä -->
-        <ul th:fragment="wall">
-            <li th:each="message : ${messages}">
-                <div th:replace="fragments/layout :: displayMessage"></div>
-                <a th:href='@{/message/{id}(id=${message.id})}' th:text="${'Show message and ' + #lists.size(message.comments) + ' comments'}">Show message</a>
-                <div th:replace="fragments/layout :: likesM"></div>
-            </li>
-        </ul>
+        <div th:fragment="wall" class="container">
+            <ul class='list-group'>
+                <li class="list-group-item" th:each="message : ${messages}">
+                    <div th:replace="fragments/layout :: displayMessage"></div>
+                    <small><a th:href='@{/message/{id}(id=${message.id})}' th:text="${'Show message and comments (' + #lists.size(message.comments) + ')'}">Show message</a></small>
+                    <div th:replace="fragments/layout :: likesM"></div>
+                </li>
+            </ul>
+        </div>
         
         <!-- Näytä viestin tiedot -->
         <div th:fragment='displayMessage'>
             <a th:href='@{/profile/{abbr}(abbr=${message.writer.abbr})}' th:text="${message.writer.name}"></a>
-            <span th:text='${#temporals.format(message.sendDate, "dd.MM.yyyy HH:mm")}'></span>
-            <p th:text='${message.content}'></p>
+            <small th:text='${#temporals.format(message.sendDate, "dd.MM.yyyy HH:mm")}'></small>
+            <h4 th:text='${message.content}'></h4>
         </div>
         
         <!-- Tykkäysnappi ja laskuri viestille-->
         <div th:fragment='likesM'>
             <form th:action="@{/message/like/{id}(id=${message.id})}" method="POST">
-                <button th:disabled="${#lists.contains(message.likers, user)}" class="btn btn-success" type="submit">Like</button>
+                <button th:disabled="${#lists.contains(message.likers, user)}" class="btn btn-success btn-sm" type="submit">Like</button>
             </form>
-            <span th:text="${#lists.size(message.likers) + ' likes'}"></span>
+            <small th:text="${'Likes: ' + #lists.size(message.likers)}"></small>
         </div>
         
         <!-- Tykkäysnappi ja laskuri kuvalle-->
         <div th:fragment='likesI'>
             <form th:action="@{/images/like/{id}(id=${image.id})}" method="POST">
-                <button th:disabled="${#lists.contains(image.likers, user)}" class="btn btn-success" type="submit">Like</button>
+                <button th:disabled="${#lists.contains(image.likers, user)}" class="btn btn-success btn-sm" type="submit">Like</button>
             </form>
-            <span th:text="${#lists.size(image.likers) + ' likes'}"></span>
+            <small th:text="${'Likes: ' + #lists.size(image.likers)}"></small>
         </div>
         
         <!-- Kommentin lähettäminen viestille-->
@@ -69,11 +71,11 @@
         </div>
         
         <!-- Näytä kommentit -->
-        <ul th:fragment='comments'>
-            <li th:each='comment : ${comments}'>
+        <ul class="list-group" th:fragment='comments'>
+            <li class="list-group-item" th:each='comment : ${comments}'>
                 <a th:href='@{/profile/{abbr}(abbr=${comment.writer.abbr})}' th:text="${comment.writer.name}"></a>
-                <span th:text='${#temporals.format(comment.sendDate, "dd.MM.yyyy HH:mm")}'></span>
-                <p th:text='${comment.content}'></p>
+                <small th:text='${#temporals.format(comment.sendDate, "dd.MM.yyyy HH:mm")}'></small>
+                <h5 th:text='${comment.content}'></h5>
             </li>
         </ul>
         

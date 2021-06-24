@@ -9,10 +9,14 @@
     <body>
         <div th:replace="fragments/layout :: navbar"></div>
 
-        <div th:replace="fragments/layout :: displayMessage"></div>
-        <div th:replace="fragments/layout :: likesM"></div>
-        <div th:replace="fragments/layout :: sendCommentM"></div>
-        <div th:replace="fragments/layout :: comments"></div>
+        <div class="container pt-3 my-3">
+            <div th:replace="fragments/layout :: displayMessage"></div>
+            <div th:replace="fragments/layout :: likesM"></div>
+            <br/>
+            <div th:replace="fragments/layout :: sendCommentM"></div>
+            <br/>
+            <div th:replace="fragments/layout :: comments"></div>
+        </div>
         
     </body>
 </html>

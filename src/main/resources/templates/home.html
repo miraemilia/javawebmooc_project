@@ -9,12 +9,14 @@
     <body>
         
         <div th:replace="fragments/layout :: navbar"></div>
-        <div class="container">
+        <div class="container p-3 my-3">
             <div class="row">
                 <div class="col-4">
+                    <div class="container pt-2 my-2">
+                         
                     <div class="card bg-light text-center">
                         <div th:if="${user.profilepic != null}" >
-                            <img class="card-img-top" th:src="@{/images/{id}/content(id=${user.profilepic.id})}" alt="Profile image"/>
+                            <img class="card-img-top img-fluid" th:src="@{/images/{id}/content(id=${user.profilepic.id})}" alt="Profile image"/>
                         </div>
                         <div th:unless="${user.profilepic != null}" >
                             <img class="card-img-top" th:src="@{/pictures/profilepic.jpg}" alt="Profile image"/>
@@ -23,33 +25,52 @@
                             <h3 class="card-title" th:text="${user.name}">Name</h3>
                         </div>
                     </div>
+                    
+                    <div class='container pt-3 my-3'>
                     <h4>People who you follow</h4>
-                    <ul> 
-                        <li th:each="follow : ${user.followerTo}">
+                    <ul class="list-group"> 
+                        <li class="list-group-item border-0" th:each="follow : ${user.followerTo}">
                             <a th:href="@{/profile/{abbr}(abbr=${follow.followed.abbr})}" th:text="${follow.followed.name}"></a>
-                            <span th:text="${' since ' + #temporals.format(follow.followTime, 'dd.MM.yyyy HH:mm')}"></span>
+                            <p><small th:text="${' since ' + #temporals.format(follow.followTime, 'dd.MM.yyyy HH:mm')}"></small></p>
                         </li>
                     </ul>
                     <h4>People who follow you</h4>
-                    <ul>
-                        <li th:each="follow : ${user.followedBy}">
-                            <a th:href="@{/profile/{abbr}(abbr=${follow.follower.abbr})}" th:text="${follow.follower.name}"></a>
-                            <span th:text="${' since ' + #temporals.format(follow.followTime, 'dd.MM.yyyy HH:mm')}"></span>
-                            <form th:action="@{/home/reject/{id}(id=${follow.follower.id})}" method="POST">
-                                <button class="btn btn-warning" type="submit">Reject</button>
-                            </form>
+                    <ul class="list-group">
+                        <li class="list-group-item border-0" th:each="follow : ${user.followedBy}">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/{abbr}(abbr=${follow.follower.abbr})}" th:text="${follow.follower.name}"></a>
+                                        <p><small th:text="${' since ' + #temporals.format(follow.followTime, 'dd.MM.yyyy HH:mm')}"></small></p>
+                                    </td>
+                                    <td>
+                                        <form class="form-inline" th:action="@{/home/reject/{id}(id=${follow.follower.id})}" method="POST">
+                                        <button class="btn btn-warning btn-sm"type="submit">Reject</button>
+                                    </form>
+                                    </td>
+                                </tr>
+                            </table>
                         </li>
                     </ul>
+                    </div>
+                    
+                    </div>
                 </div>
+                
                 <div class="col-8">
-                    <div>
-                        <form method="POST" th:action="@{/message}">
-                            <input type="text" name="content" id="content"/>
-                            <input type="submit" value="Post"/>
+                    <div class='container pt-2 my-2'>
+                    <div class="row pt-2 my-2">
+                        <form class="form-inline" method="POST" th:action="@{/message}">
+                            <input type="text" class="form-control" name="content" id="content"/>
+                            <button type="submit" class="btn btn-primary">Post</button>
                         </form>
                     </div>
+                        
                     <div th:replace="fragments/layout :: wall"></div>
+                    
+                    </div>
                 </div>
+                
             </div>
         </div>
 

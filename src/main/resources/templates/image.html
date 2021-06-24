@@ -10,6 +10,7 @@
         <div th:replace="fragments/layout :: navbar"></div>
 
         <a th:href="@{/profile/{abbr}/album(abbr=${image.owner.abbr})}">Back to album</a>
+        <br/>
         
         <div class="col-5">
             <div class="card bg-light text-center">
@@ -19,7 +20,9 @@
             </div>
         </div>
         <div class="col-7">
+            <br/>
             <div th:replace="fragments/layout :: sendCommentI"></div>
+            <br/>
             <div th:replace="fragments/layout :: comments"></div>
         </div>
         

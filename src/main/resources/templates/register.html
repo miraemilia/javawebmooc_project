@@ -1,21 +1,43 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Login</title>
+        <title>Register</title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
     </head>
     <body>
+        
+        <div class="container p-3 my-3">
+            <a th:href="@{/login}" class="btn btn-info">Back to login</a>
+        </div>
+        
+        <div class="container p-3 my-3 border mx-auto">
         <h1>Register</h1>
         <form name="register" th:action="@{/register}" method="POST">
-            <p>Username: <input type="text" name="username" id="username"/></p>
-            <p>Password: <input type="text" name="password" id="password"/></p>
-            <p>Name: <input type="text" name="name" id="name"/></p>
-            <p>Alias: <input type="text" name="abbr" id="abbr"/></p>
-            <input type="submit" value="Register"/>
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" class="form-control" name="username" id="username"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" name="password" id="password"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" name="name" id="name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="abbr">Alias:</label>
+                        <input type="text" class="form-control" name="abbr" id="abbr"/>
+                    </div>            
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </div>
         </form>
-        
-        <a th:href="@{/login}">Login</a>
+        </div>
+
     </body>
 </html>

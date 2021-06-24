@@ -11,6 +11,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-4">
+                    
+                    <div class="container pt-2 my-2">
+                    
                     <div class="card bg-light text-center">
                         <div th:if="${other.profilepic != null}" >
                             <img class="card-img-top" th:src="@{/images/{id}/content(id=${other.profilepic.id})}" alt="Profile image"/>
@@ -28,14 +31,23 @@
                             </form>
                         </div>
                     </div>
-                    <a th:href='@{/profile/{abbr}/album(abbr=${other.abbr})}'>Album</a>
-                    <h4>People who they follow</h4>
-                    <ul> 
-                        <li th:each="follow : ${other.followerTo}">
-                            <a th:href="@{/profile/{abbr}(abbr=${follow.followed.abbr})}" th:text="${follow.followed.name}"></a>
-                            <span th:text="${' since ' + #temporals.format(follow.followTime, 'dd.MM.yyyy HH:mm')}"></span>
-                        </li>
-                    </ul>
+                    
+                    <div class='container pt-3 my-3'>
+                        
+                        <h4><a th:href='@{/profile/{abbr}/album(abbr=${other.abbr})}'>Album</a></h4>
+                        
+                        <h4>People who they follow</h4>
+                        <ul class="list-group"> 
+                            <li class="list-group-item border-0" th:each="follow : ${other.followerTo}">
+                                <a th:href="@{/profile/{abbr}(abbr=${follow.followed.abbr})}" th:text="${follow.followed.name}"></a>
+                                <p><small th:text="${' since ' + #temporals.format(follow.followTime, 'dd.MM.yyyy HH:mm')}"></small></p>
+                            </li>
+                        </ul>
+                        
+                    </div>
+                    
+                    </div>
+                    
                 </div>
                 <div class="col-8">
                     <div th:replace="fragments/layout :: wall"></div>
