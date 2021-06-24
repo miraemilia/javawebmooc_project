@@ -18,7 +18,7 @@ public class SearchController {
     public String userSearch(Model model, @RequestParam(value="searched") String searched) {
     
         model.addAttribute("results", userRepository.findByNameStartingWithIgnoreCase(searched));        
-        return "/search";
+        return "search";
     }
     
     @GetMapping("/search")
