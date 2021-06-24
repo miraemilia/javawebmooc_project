@@ -7,7 +7,101 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
     </head>
     <body>
-        <p th:fragment="test">Näkyykö?</p>
+        
+        <!-- Listaa seurattavat, ei käytössä-->
+        <div th:fragment="follows">
+            <h4 th:text="${'People who ' + {person} + ' follow'}"></h4>
+            <ul th:fragment="follows(person)"> 
+                <li th:each="follow : ${user.followerTo}">
+                    <a th:href="@{/profile/{abbr}(abbr=${follow.followed.abbr})}" th:text="${follow.followed.name}"></a>
+                    <span th:text="${' since ' + #temporals.format(follow.followTime, 'dd.MM.yyyy HH:mm')}"></span>
+                </li>
+            </ul>
+        </div>
+        
+        
+        <!-- Seinä -->
+        <ul th:fragment="wall">
+            <li th:each="message : ${messages}">
+                <div th:replace="fragments/layout :: displayMessage"></div>
+                <a th:href='@{/message/{id}(id=${message.id})}' th:text="${'Show message and ' + #lists.size(message.comments) + ' comments'}">Show message</a>
+                <div th:replace="fragments/layout :: likesM"></div>
+            </li>
+        </ul>
+        
+        <!-- Näytä viestin tiedot -->
+        <div th:fragment='displayMessage'>
+            <a th:href='@{/profile/{abbr}(abbr=${message.writer.abbr})}' th:text="${message.writer.name}"></a>
+            <span th:text='${#temporals.format(message.sendDate, "dd.MM.yyyy HH:mm")}'></span>
+            <p th:text='${message.content}'></p>
+        </div>
+        
+        <!-- Tykkäysnappi ja laskuri viestille-->
+        <div th:fragment='likesM'>
+            <form th:action="@{/message/like/{id}(id=${message.id})}" method="POST">
+                <button th:disabled="${#lists.contains(message.likers, user)}" class="btn btn-success" type="submit">Like</button>
+            </form>
+            <span th:text="${#lists.size(message.likers) + ' likes'}"></span>
+        </div>
+        
+        <!-- Tykkäysnappi ja laskuri kuvalle-->
+        <div th:fragment='likesI'>
+            <form th:action="@{/images/like/{id}(id=${image.id})}" method="POST">
+                <button th:disabled="${#lists.contains(image.likers, user)}" class="btn btn-success" type="submit">Like</button>
+            </form>
+            <span th:text="${#lists.size(image.likers) + ' likes'}"></span>
+        </div>
+        
+        <!-- Kommentin lähettäminen viestille-->
+        <div th:fragment="sendCommentM">
+            <form method="POST" th:action="@{/message/comment/{id}(id=${message.id})}">
+                <input type="text" name="content" id="content"/>
+                <input type="submit" value="Post a comment"/>
+            </form>
+        </div>
+        
+        <!-- Kommentin lähettäminen kuvalle-->
+        <div th:fragment="sendCommentI">
+            <form method="POST" th:action="@{/images/comment/{id}(id=${image.id})}">
+                <input type="text" name="content" id="content"/>
+                <input type="submit" value="Post a comment"/>
+            </form>
+        </div>
+        
+        <!-- Näytä kommentit -->
+        <ul th:fragment='comments'>
+            <li th:each='comment : ${comments}'>
+                <a th:href='@{/profile/{abbr}(abbr=${comment.writer.abbr})}' th:text="${comment.writer.name}"></a>
+                <span th:text='${#temporals.format(comment.sendDate, "dd.MM.yyyy HH:mm")}'></span>
+                <p th:text='${comment.content}'></p>
+            </li>
+        </ul>
+        
+        <!-- Näytä kuvat omassa albumissa -->
+        <div th:fragment="displayMyImages" class="card-columns">
+            <div class="card bg-light text-center" th:each="image : ${images}">
+                <img class="card-img-top img-thumbnail" th:src="@{/images/{id}/content(id=${image.id})}"/>
+                <p class="card-text" th:text="${image.description}">description</p>
+                <a th:href="@{/images/{id}(id=${image.id})}" class="btn btn-primary">See image</a>
+                <form th:action="@{/home/profilepic/{id}(id=${image.id})}" method="POST">
+                     <button class="btn btn-success" type="submit">Set as profile picture</button>
+                </form>
+                <form th:action="@{/images/remove/{id}(id=${image.id})}" method="POST">
+                    <button class="btn btn-warning" type="submit">Detele image</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Näytä kuvat toisen albumissa -->
+        <div th:fragment="displayOthersImages" class="card-columns">
+            <div class="card bg-light text-center" th:each="image : ${images}">
+                <img class="card-img-top img-thumbnail" th:src="@{/images/{id}/content(id=${image.id})}"/>
+                <p class="card-text" th:text="${image.description}">description</p>
+                <a th:href="@{/images/{id}(id=${image.id})}" class="btn btn-primary">See image</a>
+            </div>
+        </div>
+        
+        <!-- Navigaatiopalkki -->
         <nav th:fragment="navbar" class='navbar navbar-expand-sm bg-light navbar-light'>
             <ul class='navbar-nav'>
                 <li class="nav-item">
@@ -19,7 +113,7 @@
             </ul>
             <div>
                 <form class="form-inline" th:action="@{/search}" method="POST">
-                    <input class="form-control mr-sm-2" type="text" name="searched" placeholder="Username"></input>
+                    <input class="form-control mr-sm-2" type="text" name="searched" placeholder="Name"></input>
                     <button class="btn btn-success" type="submit">Search</button>
                 </form>
             </div>       
@@ -29,5 +123,6 @@
                 </form>
             </div>
         </nav>
+        
     </body>
 </html>

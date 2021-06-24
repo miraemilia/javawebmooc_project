@@ -1,12 +1,21 @@
 <!DOCTYPE HTML>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>My images</title>
+        <title>My album</title>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
     </head>
     <body>
         <div th:replace="fragments/layout :: navbar"></div>
+        
+        <div th:replace="fragments/layout :: displayMyImages"></div>
+        
+        <form method="POST" th:action="@{/images}" enctype="multipart/form-data">
+            <input th:disabled="${#lists.size(images) >= 10}" type="file" name="file" id="file"/>
+            <input type="text" name="description" id="description"/>
+            <input th:disabled="${#lists.size(images) >= 10}" type="submit" value="Add!"/>
+        </form>
+        <p th:if="${#lists.size(images) >= 10}">You have already added 10 images. Please delete some to be able to add new ones!</p>
     </body>
 </html>

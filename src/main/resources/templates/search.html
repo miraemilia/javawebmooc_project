@@ -8,10 +8,16 @@
     </head>
     <body>
         <div th:replace="fragments/layout :: navbar"></div>
-        <div class="card-deck">
+        <p th:if="${#lists.isEmpty(results)}" >No matches.</p>
+        <div class="card-columns">
             <div class="card bg-light text-center" th:each="user : ${results}">
-                <img class="card-img-top" src="#" alt="Profile picture"/>
-                <h3 class="card-title" th:text="${user.username}">user</h3>
+                <div th:if="${user.profilepic != null}" >
+                    <img class="card-img-top" th:src="@{/images/{id}/content(id=${user.profilepic.id})}" alt="Profile picture"/>
+                </div>
+                <div th:unless="${user.profilepic != null}" >
+                     <img class="card-img-top" th:src="@{/pictures/profilepic.jpg}" alt="Profile image"/>
+                </div>
+                <h3 class="card-title" th:text="${user.name}">Name</h3>
                 <a th:href="@{/profile/{abbr}(abbr=${user.abbr})}" class="btn btn-primary">See profile</a>     
             </div>
         </div>

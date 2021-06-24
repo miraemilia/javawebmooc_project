@@ -17,7 +17,7 @@ public class SearchController {
     @PostMapping("/search")
     public String userSearch(Model model, @RequestParam(value="searched") String searched) {
     
-        model.addAttribute("results", userRepository.findByUsernameStartingWith(searched));        
+        model.addAttribute("results", userRepository.findByNameStartingWithIgnoreCase(searched));        
         return "/search";
     }
     

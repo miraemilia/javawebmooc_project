@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,9 +19,11 @@ public class User extends AbstractPersistable<Long> {
     private String username;
     private String password;
     private String abbr;
-    @ManyToMany
-    private List<User> following;
-    @OneToMany
-    private List<Image> images;
+    @OneToOne
+    private Image profilepic;
+    @ManyToMany (mappedBy="follower")
+    private List<Follow> followerTo;
+    @ManyToMany (mappedBy="followed")
+    private List<Follow> followedBy;
             
 }

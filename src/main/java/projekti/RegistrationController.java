@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RegistrationController {
@@ -18,27 +19,26 @@ public class RegistrationController {
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     
     @GetMapping("/register")
-    public String showRegistered(Model model) {
-        model.addAttribute("users", userRepository.findAll());
+    public String showRegistration() {
         return "register";
     }
     
     @PostMapping("/register")
-    public String register() {
-        String base = "käyttäjä";
-        for (int i = 1; i<5; i++) {
-            String ordinal = String.valueOf(i);
-            String username = base + ordinal;
+    public String register(@RequestParam("username") String username, 
+            @RequestParam("password") String password, 
+            @RequestParam("name") String name, 
+            @RequestParam("abbr") String abbr) {
+
             User u = userRepository.findByUsername(username);
             if (u == null) {
                 u = new User();
                 u.setUsername(username);
-                u.setPassword(passwordEncoder.encode("salasana"));
-                u.setAbbr("k" + ordinal);
+                u.setPassword(passwordEncoder.encode(password));
+                u.setAbbr(abbr);
+                u.setName(name);
                 userRepository.save(u);
-                break;
             }
-        }
+            
         return "redirect:/register";
     }
     
