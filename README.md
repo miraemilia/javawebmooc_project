@@ -2,6 +2,6 @@
 
 This is my course project for a course on Java web programming. The task was to build an application for adding text and pictures and following other users, i.e. "a simplified Twitter". (https://web-palvelinohjelmointi-21.mooc.fi/projekti)
 
-# Th application on Heroku
+# The application on Heroku
 
 https://calm-cliffs-19243.herokuapp.com/
